@@ -5,6 +5,8 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.nashss.se.momentum.activity.requests.GetGoalDetailsRequest;
 import com.nashss.se.momentum.activity.results.GetGoalDetailsResult;
 
+import java.nio.charset.StandardCharsets;
+
 public class GetGoalDetailsLambda
         extends LambdaActivityRunner<GetGoalDetailsRequest, GetGoalDetailsResult>
         implements RequestHandler<AuthenticatedLambdaRequest<GetGoalDetailsRequest>, LambdaResponse> {
@@ -14,7 +16,7 @@ public class GetGoalDetailsLambda
         return super.runActivity(
                 () -> {
                     GetGoalDetailsRequest unauthenticatedRequest = input.fromPath(path -> GetGoalDetailsRequest.builder()
-                            .withGoalName(path.get("goalName"))
+                            .withGoalName(java.net.URLDecoder.decode(path.get("goalName"), StandardCharsets.UTF_8))
                             .build());
 
                     return input.fromUserClaims(claims ->

@@ -5,6 +5,8 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.nashss.se.momentum.activity.requests.DeleteEventRequest;
 import com.nashss.se.momentum.activity.results.DeleteEventResult;
 
+import java.nio.charset.StandardCharsets;
+
 
 public class DeleteEventLambda
         extends LambdaActivityRunner<DeleteEventRequest, DeleteEventResult>
@@ -14,8 +16,8 @@ public class DeleteEventLambda
         return super.runActivity(
                 () -> {
                     DeleteEventRequest unauthenticatedRequest = input.fromPath(path -> DeleteEventRequest.builder()
-                            .withGoalId(path.get("goalId"))
-                            .withEventId(path.get("eventId"))
+                            .withGoalId(java.net.URLDecoder.decode(path.get("goalId"), StandardCharsets.UTF_8))
+                            .withEventId(java.net.URLDecoder.decode(path.get("eventId"), StandardCharsets.UTF_8))
                             .build());
 
                     return input.fromUserClaims(claims ->
